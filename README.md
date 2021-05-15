@@ -34,6 +34,6 @@
 
 # 截图
 
-![效果.png](http://ww1.sinaimg.cn/large/61e8a333gy1gqjfv90ti8j20oc0cz0st.jpg)
+![效果.png](http://ww1.sinaimg.cn/large/61e8a333gy1gqjg0q201aj20oy0c6dfw.jpg)
 
-![效果2.png](http://ww1.sinaimg.cn/large/61e8a333gy1gqjfvkbh0lj20hy0apdft.jpg)
+![效果2.png](http://ww1.sinaimg.cn/large/61e8a333gy1gqjfv90ti8j20oc0cz0st.jpg)
