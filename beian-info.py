@@ -171,12 +171,17 @@ while True:
             domain_name = info_base['domain']
             domain_type = info_base['natureName']
             domain_licence = info_base['mainLicence']
-            domain_content_approved = info_base['contentTypeName']
             domain_web_licence = info_base['serviceLicence']
             domain_site_name = info_base['serviceName']
             domain_status = info_base['limitAccess']
             domain_approve_date = info_base['updateRecordTime']
             domain_owner = info_base['unitName']
+            try:
+                domain_content_approved = info_base['contentTypeName']
+                if not bool(domain_content_approved):
+                    domain_content_approved = "无"
+            except KeyError:
+                domain_content_approved = "无"
             print("\n域名主办方：",domain_owner,'\n')
             print("域名：",domain_name,'\n')
             print("网站名称：",domain_site_name,'\n')
