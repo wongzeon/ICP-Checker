@@ -77,6 +77,7 @@ while True:
         'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6',
         'Cookie': '__jsluid_s=' + cookie
     }
+    p_request = requests.post(p_url,data='',headers=p_headers)
     try:
         p_uuid = p_request.json()['params']['uuid']
         big_image = p_request.json()['params']['bigImage']
