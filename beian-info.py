@@ -130,8 +130,8 @@ while True:
     check_request = requests.post(check_url,json=check_data,headers=check_headers)
     try:
         sign = check_request.json()['params']
-    except KeyError:
-        print(check_request.json()['msg'])
+    except Exception:
+        print('\n'"请求被禁止，请稍后或更换头部与IP后再试，状态码：",check_request.status_code)
         break
     #获取备案信息
     info_url = 'https://hlwicpfwc.miit.gov.cn/icpproject_query/api/icpAbbreviateInfo/queryByCondition'
