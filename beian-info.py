@@ -1,10 +1,5 @@
-import requests
-import hashlib
-import time
-import base64
-import cv2
-import os
-
+# -*- coding: utf-8 -*-
+import requests,hashlib,time,base64,cv2,os
 while True:
     #提前获取要查询的对象信息，以免Token失效（Token有效时间为3分钟）
     print("以企业名称查询的，需要输入企业全称\n")
