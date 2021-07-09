@@ -40,10 +40,12 @@ Python 版本 => 3.6
 
 # 实际测试
 
-⏰`最新可用测试时间：2021年6月17日`
+⏰`最新可用测试时间：2021年7月9日`
 
 ![效果.png](http://ww1.sinaimg.cn/large/61e8a333gy1gqjg0q201aj20oy0c6dfw.jpg)
 
 ![效果2.png](http://ww1.sinaimg.cn/large/61e8a333gy1gqjfv90ti8j20oc0cz0st.jpg)
+
+![query.png](http://ww1.sinaimg.cn/large/001NakGngy1gsalbq8ju0j617n0gctau02.jpg)
 
 ![验证码识别.jpg](http://ww1.sinaimg.cn/large/61e8a333gy1gqjgtbrt35j20dw05agm8.jpg)
