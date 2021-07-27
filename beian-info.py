@@ -3,7 +3,7 @@ import requests,hashlib,time,base64,cv2,os
 while True:
     #提前获取要查询的对象信息，以免Token失效（Token有效时间为3分钟）
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
-    print("版本：V1.1 可用测试：2021-7-9\n")
+    print("版本：V1.1 可用测试：2021-7-27\n")
     print("以企业名称查询的，需要输入企业全称\n")
     print("以域名查询的，请不要输入“http/www”等域名外的字符\n")
     info = input("请输入要查询的备案信息，可以为公司名或域名：")
