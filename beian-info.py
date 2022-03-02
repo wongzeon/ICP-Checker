@@ -1,5 +1,13 @@
 # -*- coding: utf-8 -*-
-import requests,hashlib,time,base64,cv2,os
+import requests
+import hashlib
+import time
+import base64
+import cv2
+import os
+
+os.environ['no_proxy'] = '*' #避免因系统代理设置导致请求失败
+
 while True:
     #提前获取要查询的对象信息，以免Token失效（Token有效时间为3分钟）
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
@@ -170,7 +178,6 @@ while True:
             domain_type = info_base['natureName']
             domain_licence = info_base['mainLicence']
             domain_web_licence = info_base['serviceLicence']
-            domain_site_name = info_base['serviceName']
             domain_status = info_base['limitAccess']
             domain_approve_date = info_base['updateRecordTime']
             domain_owner = info_base['unitName']
@@ -182,7 +189,6 @@ while True:
                 domain_content_approved = "无"
             print("\n域名主办方：",domain_owner,'\n')
             print("域名：",domain_name,'\n')
-            print("网站名称：",domain_site_name,'\n')
             print("备案许可证号：",domain_licence,'\n')
             print("网站备案号：",domain_web_licence,'\n')
             print("域名类型：",domain_type,'\n')
