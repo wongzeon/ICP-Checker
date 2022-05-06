@@ -73,6 +73,6 @@ Python 版本 => 3.6
 
 ![beian_info_xlsx.png](https://pic.rmb.bdstatic.com/bjh/539ab061960a8866feb41d88b490355a.png)
 
-![翻页.png](https://pic.rmb.bdstatic.com/bjh/6602902bd2270de363a0ede6c091dd51.png)
+![翻页.png](https://pic.rmb.bdstatic.com/bjh/73f790ab82827a08b115328e8ff54b0c.png)
 
 ![验证码识别.jpg](http://ww1.sinaimg.cn/large/61e8a333gy1gqjgtbrt35j20dw05agm8.jpg)
