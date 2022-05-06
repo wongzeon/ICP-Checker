@@ -52,6 +52,12 @@
 
 Python 版本 => 3.6
 
+如果已经装有 opencv、requests、openpyxl可以跳过这步，如果没有则执行：
+
+`pip install -r requirements.txt`
+
+或分别执行以下命令：
+
 `pip install opencv_python`
 
 `pip install requests`
