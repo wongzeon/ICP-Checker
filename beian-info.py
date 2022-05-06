@@ -12,11 +12,11 @@ from openpyxl.styles import Alignment
 os.environ['no_proxy'] = '*'
 
 def query_base(): 
-    print("版本：V2.0 可用测试：2022-5-6\n")
+    print("版本：V2.1 可用测试：2022-5-6\n")
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
     while True:
         try:
-            info = input("输入公司名（全称，括号以英文括号输入）/ 域名查询备案信息：").replace(" ","").replace("https://www.","").replace("http://www.","").replace("http://","")
+            info = input("请完整输入公司全称 / 域名以查询备案信息：\n\n").replace(" ","").replace("https://www.","").replace("http://www.","").replace("http://","").replace("（","(").replace("）",")")
             #过滤空值和特殊字符，只允许 - . () 分别用于域名和公司名
             if info == "":
                 raise ValueError("InputNone")
@@ -187,7 +187,6 @@ def data_saver(domain_list):
     for j in range(start,end+1):
         for k in range(0,8):
             try:
-                print(j,k,domain_list[j-start][k])
                 ws.cell(j+after_title,k+1).value = domain_list[j-start][k]
             except:
                 continue
