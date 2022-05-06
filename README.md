@@ -25,7 +25,7 @@
 ✅ 查询完毕后按任意键继续查询
 
 # 使用
-已使用Nuitka打包成EXE可执行文件，[查看详情](https://github.com/wongzeon/ICP-Checker/releases/tag/2.0)
+已使用Pyinstaller打包成EXE可执行文件，[查看详情](https://github.com/wongzeon/ICP-Checker/releases/tag/2.1)
 
 方法一：输入完整的企业名称：XXXX有限公司、xxxx(xxx)有限公司
 
