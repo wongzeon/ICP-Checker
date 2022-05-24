@@ -56,7 +56,7 @@ def get_cookies():
     return -1
 
 def get_token():
-    timeStamp = int(round(time.time()*1000))
+    timeStamp = round(time.time()*1000)
     authSecret = 'testtest' + str(timeStamp)
     authKey = hashlib.md5(authSecret.encode(encoding='UTF-8')).hexdigest()
     auth_data = {'authKey': authKey,'timeStamp': timeStamp}
