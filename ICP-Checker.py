@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
 import os
-import traceback
 import cv2
 import time
 import base64
@@ -70,7 +69,6 @@ def get_token():
         token = t_response['params']['bussiness']
     except:
         print(t_response)
-        traceback.print_exc()
         return -1
     return token
 
