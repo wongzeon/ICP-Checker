@@ -13,7 +13,7 @@ os.environ['no_proxy'] = '*'
 
 
 def query_base():
-    print("版本：V2.1.2 可用测试：2022-6-14\n")
+    print("版本：V2.1.3 可用测试：2022-7-10\n")
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
     while True:
         try:
@@ -161,12 +161,17 @@ def data_saver(domain_list):
         total_row = 0
     elif total_row == 0:
         return print("所查域名无备案\n")
-    # Windows获取桌面路径，将表格保存到桌面，其他系统默认保存到/home/文件夹下
+    # Windows获取桌面路径，将表格保存到桌面，优先查询用户是否更改默认桌面路径，Linux等系统默认保存到/home/文件夹下
     if os.name == "nt":
         import winreg
         subkey = r'Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, subkey, 0)
-        desktop_path = str(winreg.QueryValueEx(key, "Desktop")[0]).replace('\\', '/') + "/"
+        desktop_raw = str(winreg.QueryValueEx(key, "Desktop")[0])
+        if desktop_raw == "%USERPROFILE%\Desktop":
+            subkey = r'Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
+            key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, subkey, 0)
+            desktop_raw = str(winreg.QueryValueEx(key, "Desktop")[0])
+        desktop_path = desktop_raw.replace('\\', '/') + "/"
         file_path = f"{desktop_path}备案信息.xlsx"
     else:
         file_path = '/home/备案信息.xlsx'
