@@ -13,7 +13,7 @@ os.environ['no_proxy'] = '*'
 
 
 def query_base():
-    print("版本：V2.1.3 可用测试：2022-7-10\n")
+    print("版本：V2.1.4 可用测试：2022-7-10\n")
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
     while True:
         try:
