@@ -17,11 +17,11 @@ def query_base():
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
     while True:
         try:
-            info = input("请完整输入公司全称 / 域名以查询备案信息：\n\n").replace(" ", "").replace("https://www.", "").replace("http://www.", "").replace("http://", "").replace("（", "(").replace("）", ")")
+            info = input("请完整输入公司全称 / 域名以查询备案信息：\n\n").replace(" ", "").replace("https://www.", "").replace("http://www.", "").replace("http://", "")
             # 过滤空值和特殊字符，只允许 - . () 分别用于域名和公司名
             if info == "":
                 raise ValueError("InputNone")
-            info = re.sub("[^\\u4e00-\\u9fa5-A-Za-z0-9,-.()]", "", info)
+            info = re.sub("[^\\u4e00-\\u9fa5-A-Za-z0-9,-.()（）]", "", info)
             input_zh = re.compile(u'[\u4e00-\u9fa5]')
             zh_match = input_zh.search(info)
             if zh_match:
@@ -161,7 +161,7 @@ def data_saver(domain_list):
         total_row = 0
     elif total_row == 0:
         return print("所查域名无备案\n")
-    # Windows获取桌面路径，将表格保存到桌面，优先查询用户是否更改默认桌面路径，Linux等系统默认保存到/home/文件夹下
+    # Windows获取桌面路径，将表格保存到桌面，其他系统默认保存到/home/文件夹下
     if os.name == "nt":
         import winreg
         subkey = r'Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
