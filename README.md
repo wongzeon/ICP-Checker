@@ -4,6 +4,10 @@
 
 适用于2022年新版的`工信部ICP/IP地址/域名信息备案管理系统`
 
+![CentOS](https://img.shields.io/badge/LINUX-CentOS-blue?style=for-the-badge&logo=CentOS)
+![Ubuntu](https://img.shields.io/badge/LINUX-Ubuntu-blue?style=for-the-badge&logo=Ubuntu)
+![Windows](https://img.shields.io/badge/Windows-7%7C8%7C10%7C11-blue?style=for-the-badge&logo=Windows)
+
 # 初衷
 
 工作时常需要查询网站的备案信息，总是要打开浏览器、点击书签、完成滑动验证等重复操作，感觉十分浪费时间
@@ -69,7 +73,7 @@ Python 版本 => 3.6
 
 # 实际测试
 
-⏰`最新可用测试时间：2022年5月6日`
+⏰`最新可用测试时间：2022年7月10日`
 
 ![beian_info.png](https://pic.rmb.bdstatic.com/bjh/5ffd54074744c80343a8e466fcd76be0.png)
 
