@@ -13,7 +13,7 @@ os.environ['no_proxy'] = '*'
 
 
 def query_base():
-    print("版本：V2.1.4 可用测试：2022-7-10\n")
+    print("版本：V2.1.5 可用测试：2022-7-11\n")
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
     while True:
         try:
@@ -28,7 +28,7 @@ def query_base():
                 info_result = info
             else:
                 # 检测是否为可备案的域名类型（类型同步日期2022/01/06）
-                input_url = re.compile(r'([^.]+)(?:\.(?:GOV\.cn|ORG\.cn|AC\.cn|MIL\.cn|NET\.cn|EDU\.cn|COM\.cn|BJ\.cn|TJ\.cn|SH\.cn|CQ\.cn|HE\.cn|SX\.cn|NM\.cn|LN\.cn|JL\.cn|HL\.cn|JS\.cn|ZJ\.cn|AH\.cn|FJ\.cn|JX\.cn|SD\.cn|HA\.cn|HB\.cn|HN\.cn|GD\.cn|GX\.cn|HI\.cn|SC\.cn|GZ\.cn|YN\.cn|XZ\.cn|SN\.cn|GS\.cn|QH\.cn|NX\.cn|XJ\.cn|TW\.cn|HK\.cn|MO\.cn|REN|WANG|CITIC|TOP|SOHU|XIN|COM|NET|CLUB|XYZ|VIP|SITE|SHOP|INK|INFO|MOBI|RED|PRO|KIM|LTD|GROUP|BIZ|AUTO|LINK|WORK|LAW|BEER|STORE|TECH|FUN|ONLINE|ART|DESIGN|WIKI|LOVE|CENTER|VIDEO|SOCIAL|TEAM|SHOW|COOL|ZONE|WORLD|TODAY|CITY|CHAT|COMPANY|LIVE|FUND|GOLD|PLUS|GURU|RUN|PUB|EMAIL|LIFE|CO|FASHION|FIT|LUXE|YOGA|BAIDU|CLOUD|HOST|SPACE|PRESS|WEBSITE|ARCHI|ASIA|BIO|BLACK|BLUE|GREEN|LOTTO|ORGANIC|PET|PINK|POKER|PROMO|SKI|VOTE|VOTO|ICU))', flags=re.IGNORECASE)
+                input_url = re.compile(r'([^.]+)(?:\.(?:GOV\.cn|ORG\.cn|AC\.cn|MIL\.cn|NET\.cn|EDU\.cn|COM\.cn|BJ\.cn|TJ\.cn|SH\.cn|CQ\.cn|HE\.cn|SX\.cn|NM\.cn|LN\.cn|JL\.cn|HL\.cn|JS\.cn|ZJ\.cn|AH\.cn|FJ\.cn|JX\.cn|SD\.cn|HA\.cn|HB\.cn|HN\.cn|GD\.cn|GX\.cn|HI\.cn|SC\.cn|GZ\.cn|YN\.cn|XZ\.cn|SN\.cn|GS\.cn|QH\.cn|NX\.cn|XJ\.cn|TW\.cn|HK\.cn|MO\.cn|cn|REN|WANG|CITIC|TOP|SOHU|XIN|COM|NET|CLUB|XYZ|VIP|SITE|SHOP|INK|INFO|MOBI|RED|PRO|KIM|LTD|GROUP|BIZ|AUTO|LINK|WORK|LAW|BEER|STORE|TECH|FUN|ONLINE|ART|DESIGN|WIKI|LOVE|CENTER|VIDEO|SOCIAL|TEAM|SHOW|COOL|ZONE|WORLD|TODAY|CITY|CHAT|COMPANY|LIVE|FUND|GOLD|PLUS|GURU|RUN|PUB|EMAIL|LIFE|CO|FASHION|FIT|LUXE|YOGA|BAIDU|CLOUD|HOST|SPACE|PRESS|WEBSITE|ARCHI|ASIA|BIO|BLACK|BLUE|GREEN|LOTTO|ORGANIC|PET|PINK|POKER|PROMO|SKI|VOTE|VOTO|ICU))', flags=re.IGNORECASE)
                 info_result = input_url.search(info)
                 if info_result is None:
                     if info.split(".")[0] == "":
@@ -154,20 +154,25 @@ def get_beian_info(info_data, p_uuid, token, sign):
 
 
 def data_saver(domain_list):
-    print(f"查询结果如下:\n\n{domain_list}\n")
-    # 计算总行数，如果是空列表，即代表该域名没有备案信息
+    """
+    打印最终结果，并保存数据至Excel表格，同时调整表格格式。
+    """
+    # 计算需要写入表格的总行数，如果是空列表，即代表该域名没有备案信息，也有可能是获取信息失败了
     total_row = len(domain_list)
     if total_row == 1:
         total_row = 0
     elif total_row == 0:
         return print("所查域名无备案\n")
+    print(f"查询结果如下:\n\n{domain_list}\n")
     # Windows获取桌面路径，将表格保存到桌面，其他系统默认保存到/home/文件夹下
     if os.name == "nt":
         import winreg
+        # 用户更改过桌面路径，则需获取User Shell Folders才能获取到准确的桌面路径，否则不会保存到实际的桌面
         subkey = r'Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders'
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, subkey, 0)
         desktop_raw = str(winreg.QueryValueEx(key, "Desktop")[0])
         if desktop_raw == "%USERPROFILE%\Desktop":
+            # 此时情况为用户未更改过桌面路径，则需获取系统默认路径
             subkey = r'Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders'
             key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, subkey, 0)
             desktop_raw = str(winreg.QueryValueEx(key, "Desktop")[0])
