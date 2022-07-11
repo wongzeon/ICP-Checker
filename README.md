@@ -82,10 +82,4 @@
 
 ![2.1.5 公司名查询.jpg](https://pic.rmb.bdstatic.com/bjh/8a8e74d50e06f07f91d05e60bfcb63db.jpeg)
 
-![2.1.5 备案号查询.png](https://pic.rmb.bdstatic.com/bjh/ac70a680f14c1c0a4598a1ee1c992b90.png)
-
 ![beian_info_xlsx.png](https://pic.rmb.bdstatic.com/bjh/539ab061960a8866feb41d88b490355a.png)
-
-![翻页.png](https://pic.rmb.bdstatic.com/bjh/73f790ab82827a08b115328e8ff54b0c.png)
-
-![验证码识别.jpg](http://ww1.sinaimg.cn/large/61e8a333gy1gqjgtbrt35j20dw05agm8.jpg)
