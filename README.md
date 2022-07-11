@@ -4,9 +4,10 @@
 
 适用于2022年新版的`工信部ICP/IP地址/域名信息备案管理系统`
 
-![CentOS](https://img.shields.io/badge/LINUX-CentOS-blue?style=for-the-badge&logo=CentOS)
-![Ubuntu](https://img.shields.io/badge/LINUX-Ubuntu-blue?style=for-the-badge&logo=Ubuntu)
+![CentOS](https://img.shields.io/badge/LINUX-CentOS-purple?style=for-the-badge&logo=CentOS)
+![Ubuntu](https://img.shields.io/badge/LINUX-Ubuntu-orange?style=for-the-badge&logo=Ubuntu)
 ![Windows](https://img.shields.io/badge/Windows-7%7C8%7C10%7C11-blue?style=for-the-badge&logo=Windows)
+![Python](https://img.shields.io/badge/Python-≥3.6-green?style=for-the-badge&logo=Python)
 
 # 初衷
 
@@ -58,8 +59,6 @@
 具体可参考工信部公布的[备案域名列表](http://xn--fiq8ituh5mn9d1qbc28lu5dusc.xn--vuq861b/)
 
 # 依赖
-
-Python 版本 => 3.6
 
 如果已经装有 opencv、requests、openpyxl可以跳过这步，如果没有则执行：
 
