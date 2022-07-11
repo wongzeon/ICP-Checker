@@ -68,7 +68,6 @@ def get_token():
         t_response = requests.post(url=url, data=auth_data, headers=base_header).json()
         token = t_response['params']['bussiness']
     except:
-        print(t_response)
         return -1
     return token
 
