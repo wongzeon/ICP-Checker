@@ -13,7 +13,7 @@ os.environ['no_proxy'] = '*'
 
 
 def query_base():
-    print("版本：V2.1.5 可用测试：2022-7-11\n")
+    print("版本：V2.1.6 可用测试：2023-2-26\n")
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
     while True:
         try:
@@ -28,7 +28,10 @@ def query_base():
                 info_result = info
             else:
                 # 检测是否为可备案的域名类型（类型同步日期2022/01/06）
-                input_url = re.compile(r'([^.]+)(?:\.(?:GOV\.cn|ORG\.cn|AC\.cn|MIL\.cn|NET\.cn|EDU\.cn|COM\.cn|BJ\.cn|TJ\.cn|SH\.cn|CQ\.cn|HE\.cn|SX\.cn|NM\.cn|LN\.cn|JL\.cn|HL\.cn|JS\.cn|ZJ\.cn|AH\.cn|FJ\.cn|JX\.cn|SD\.cn|HA\.cn|HB\.cn|HN\.cn|GD\.cn|GX\.cn|HI\.cn|SC\.cn|GZ\.cn|YN\.cn|XZ\.cn|SN\.cn|GS\.cn|QH\.cn|NX\.cn|XJ\.cn|TW\.cn|HK\.cn|MO\.cn|cn|REN|WANG|CITIC|TOP|SOHU|XIN|COM|NET|CLUB|XYZ|VIP|SITE|SHOP|INK|INFO|MOBI|RED|PRO|KIM|LTD|GROUP|BIZ|AUTO|LINK|WORK|LAW|BEER|STORE|TECH|FUN|ONLINE|ART|DESIGN|WIKI|LOVE|CENTER|VIDEO|SOCIAL|TEAM|SHOW|COOL|ZONE|WORLD|TODAY|CITY|CHAT|COMPANY|LIVE|FUND|GOLD|PLUS|GURU|RUN|PUB|EMAIL|LIFE|CO|FASHION|FIT|LUXE|YOGA|BAIDU|CLOUD|HOST|SPACE|PRESS|WEBSITE|ARCHI|ASIA|BIO|BLACK|BLUE|GREEN|LOTTO|ORGANIC|PET|PINK|POKER|PROMO|SKI|VOTE|VOTO|ICU))', flags=re.IGNORECASE)
+                # TODO 部分特殊域名, 如51.la也能备案, 可能是特事特办
+                input_url = re.compile(
+                    r'([^.]+)(?:\.(?:GOV\.cn|ORG\.cn|AC\.cn|MIL\.cn|NET\.cn|EDU\.cn|COM\.cn|BJ\.cn|TJ\.cn|SH\.cn|CQ\.cn|HE\.cn|SX\.cn|NM\.cn|LN\.cn|JL\.cn|HL\.cn|JS\.cn|ZJ\.cn|AH\.cn|FJ\.cn|JX\.cn|SD\.cn|HA\.cn|HB\.cn|HN\.cn|GD\.cn|GX\.cn|HI\.cn|SC\.cn|GZ\.cn|YN\.cn|XZ\.cn|SN\.cn|GS\.cn|QH\.cn|NX\.cn|XJ\.cn|TW\.cn|HK\.cn|MO\.cn|cn|REN|WANG|CITIC|TOP|SOHU|XIN|COM|NET|CLUB|XYZ|VIP|SITE|SHOP|INK|INFO|MOBI|RED|PRO|KIM|LTD|GROUP|BIZ|AUTO|LINK|WORK|LAW|BEER|STORE|TECH|FUN|ONLINE|ART|DESIGN|WIKI|LOVE|CENTER|VIDEO|SOCIAL|TEAM|SHOW|COOL|ZONE|WORLD|TODAY|CITY|CHAT|COMPANY|LIVE|FUND|GOLD|PLUS|GURU|RUN|PUB|EMAIL|LIFE|CO|FASHION|FIT|LUXE|YOGA|BAIDU|CLOUD|HOST|SPACE|PRESS|WEBSITE|ARCHI|ASIA|BIO|BLACK|BLUE|GREEN|LOTTO|ORGANIC|PET|PINK|POKER|PROMO|SKI|VOTE|VOTO|ICU))',
+                    flags=re.IGNORECASE)
                 info_result = input_url.search(info)
                 if info_result is None:
                     if info.split(".")[0] == "":
@@ -59,7 +62,7 @@ def get_cookies():
 
 
 def get_token():
-    timeStamp = round(time.time()*1000)
+    timeStamp = round(time.time() * 1000)
     authSecret = 'testtest' + str(timeStamp)
     authKey = hashlib.md5(authSecret.encode(encoding='UTF-8')).hexdigest()
     auth_data = {'authKey': authKey, 'timeStamp': timeStamp}
@@ -92,7 +95,7 @@ def get_check_pic(token):
     fill_image = cv2.imread('smallImage.jpg', cv2.COLOR_GRAY2RGB)
     position_match = cv2.matchTemplate(background_image, fill_image, cv2.TM_CCOEFF_NORMED)
     max_loc = cv2.minMaxLoc(position_match)[3][0]
-    mouse_length = max_loc+1
+    mouse_length = max_loc + 1
     os.remove('bigImage.jpg')
     os.remove('smallImage.jpg')
     check_data = {'key': p_uuid, 'value': mouse_length}
@@ -116,6 +119,9 @@ def get_beian_info(info_data, p_uuid, token, sign):
     base_header.update({'Content-Length': '78', 'uuid': p_uuid, 'token': token, 'sign': sign})
     try:
         beian_info = requests.post(url=info_url, json=info_data, headers=base_header).json()
+        if not beian_info["success"]:
+            print(f'请求错误: CODE {beian_info["code"]} MSG {beian_info["msg"]}')
+            return domain_list
         domain_total = beian_info['params']['total']
         page_total = beian_info['params']['lastPage']
         end_row = beian_info['params']['endRow']
@@ -123,7 +129,7 @@ def get_beian_info(info_data, p_uuid, token, sign):
         print(f"\n查询对象：{info} 共有 {domain_total} 个已备案域名\n")
         for i in range(0, page_total):
             print(f"正在查询第{i+1}页……\n")
-            for k in range(0, end_row+1):
+            for k in range(0, end_row + 1):
                 info_base = beian_info['params']['list'][k]
                 domain_name = info_base['domain']
                 domain_type = info_base['natureName']
@@ -140,14 +146,15 @@ def get_beian_info(info_data, p_uuid, token, sign):
                     domain_content_approved = "无"
                 row_data = domain_owner, domain_name, domain_licence, website_licence, domain_type, domain_content_approved, domain_status, domain_approve_date
                 domain_list.append(row_data)
-            info_data = {'pageNum': i+2, 'pageSize': '40', 'unitName': info}
+            info_data = {'pageNum': i + 2, 'pageSize': '40', 'unitName': info}
             if beian_info['params']['isLastPage'] is True:
                 break
             else:
                 beian_info = requests.post(info_url, json=info_data, headers=base_header).json()
                 end_row = beian_info['params']['endRow']
                 time.sleep(3)
-    except:
+    except Exception as e:
+        print(f"意外错误: {e}")
         return domain_list
     return domain_list
 
@@ -184,7 +191,7 @@ def data_saver(domain_list):
         wb = xl.load_workbook(file_path)
         ws = wb['备案信息']
         max_row = ws.max_row
-        start = max_row+1
+        start = max_row + 1
         total_row = total_row + start
         after_title = 0
     else:
@@ -193,7 +200,7 @@ def data_saver(domain_list):
         ws.title = "备案信息"
         title_list = ['域名主办方', '域名', '备案许可证号', '网站备案号', '域名类型', '网站前置审批项', '是否限制接入', '审核通过日期']
         for i in range(0, 8):
-            ws.cell(1, i+1).value=title_list[i]
+            ws.cell(1, i + 1).value = title_list[i]
         col_width = {'A': 45, 'B': 40, 'C': 22, 'D': 24, 'E': 9, 'F': 15, 'G': 13, 'H': 21}
         for k, v in col_width.items():
             ws.column_dimensions[k].width = v
@@ -201,16 +208,16 @@ def data_saver(domain_list):
         start = 0
         after_title = 2
     # 写入查询数据
-    for j in range(start, total_row+1):
+    for j in range(start, total_row + 1):
         for k in range(0, 8):
             try:
-                ws.cell(j+after_title, k+1).value = domain_list[j-start][k]
+                ws.cell(j + after_title, k + 1).value = domain_list[j - start][k]
             except:
-               continue
+                continue
     # 垂直居中
     for row in range(ws.max_row):
         for col in range(ws.max_column):
-            ws.cell(row+1, col+1).alignment = Alignment(horizontal='center', vertical='center')
+            ws.cell(row + 1, col + 1).alignment = Alignment(horizontal='center', vertical='center')
     try:
         wb.save(file_path)
     except PermissionError:
