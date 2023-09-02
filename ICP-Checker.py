@@ -39,7 +39,7 @@ def query_base():
                     raise ValueError("ValidType")
                 else:
                     info_result = info_result.group()
-            info_data = {'pageNum': '1', 'pageSize': '40', 'unitName': info_result}
+            info_data = {'pageNum': '1', 'pageSize': '40', 'serviceType': 1, 'unitName': info_result}
             return info_data
         except ValueError as e:
             if str(e) == 'InputNone' or str(e) == 'OnlyDomainInput':
@@ -146,7 +146,7 @@ def get_beian_info(info_data, p_uuid, token, sign):
                     domain_content_approved = "无"
                 row_data = domain_owner, domain_name, domain_licence, website_licence, domain_type, domain_content_approved, domain_status, domain_approve_date
                 domain_list.append(row_data)
-            info_data = {'pageNum': i + 2, 'pageSize': '40', 'unitName': info}
+            info_data = {'pageNum': i + 2, 'pageSize': '40', 'serviceType': 1, 'unitName': info}
             if beian_info['params']['isLastPage'] is True:
                 break
             else:
