@@ -2,7 +2,7 @@
 
 一个简单的Python程序，用于查询网站或企业的ICP备案信息
 
-适用于2022年新版的`工信部ICP/IP地址/域名信息备案管理系统`
+适用于2023年新版的`工信部ICP/IP地址/域名信息备案管理系统`
 
 ![CentOS](https://img.shields.io/badge/LINUX-CentOS-purple?style=for-the-badge&logo=CentOS)
 ![Ubuntu](https://img.shields.io/badge/LINUX-Ubuntu-orange?style=for-the-badge&logo=Ubuntu)
@@ -74,7 +74,7 @@
 
 # 实际测试
 
-⏰`最新可用测试时间：2022年7月11日`
+⏰`最新可用测试时间：2023年9月5日`
 
 ![2.1.5 cn域名查询.jpg](https://pic.rmb.bdstatic.com/bjh/e5be90e1b6aee5258b5448770d1b288a.jpeg)
 
