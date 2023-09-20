@@ -74,11 +74,9 @@
 
 # 实际测试
 
-⏰`最新可用测试时间：2023年9月5日`
+⏰`最新可用测试时间：2023年9月20日`
 
-![2.1.5 cn域名查询.jpg](https://pic.rmb.bdstatic.com/bjh/e5be90e1b6aee5258b5448770d1b288a.jpeg)
-
-![2.1.5 公司名查询.jpg](https://pic.rmb.bdstatic.com/bjh/8a8e74d50e06f07f91d05e60bfcb63db.jpeg)
+![备案查询.png](https://pic2.58cdn.com.cn/nowater/webim/big/n_v255991fd9cb5c4849a44183213fb9a711.png)
 
 ![beian_info_xlsx.png](https://pic.rmb.bdstatic.com/bjh/539ab061960a8866feb41d88b490355a.png)
 
