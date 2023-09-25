@@ -13,24 +13,23 @@ os.environ['no_proxy'] = '*'
 
 
 def query_base():
-    print("版本：V2.1.8 可用测试：2023-9-20\n")
+    print("版本：V2.1.9 可用测试：2023-9-25\n")
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
     while True:
         try:
             info = input("请完整输入公司全称 / 域名以查询备案信息：\n\n").replace(" ", "").replace("https://www.", "").replace("http://www.", "").replace("http://", "")
-            # 过滤空值和特殊字符，只允许 - . () 分别用于域名和公司名
+            # 过滤空值和特殊字符，只允许 - —《》. () 分别用于域名和公司名
             if info == "":
                 raise ValueError("InputNone")
-            info = re.sub("[^\\u4e00-\\u9fa5-A-Za-z0-9,-.()（）]", "", info)
+            info = re.sub("[^\\u4e00-\\u9fa5-A-Za-z0-9,-.()《》—（）]", "", info)
             input_zh = re.compile(u'[\u4e00-\u9fa5]')
             zh_match = input_zh.search(info)
             if zh_match:
                 info_result = info
             else:
                 # 检测是否为可备案的域名类型（类型同步日期2022/01/06）
-                # TODO 部分特殊域名, 如51.la也能备案, 可能是特事特办
                 input_url = re.compile(
-                    r'([^.]+)(?:\.(?:GOV\.cn|ORG\.cn|AC\.cn|MIL\.cn|NET\.cn|EDU\.cn|COM\.cn|BJ\.cn|TJ\.cn|SH\.cn|CQ\.cn|HE\.cn|SX\.cn|NM\.cn|LN\.cn|JL\.cn|HL\.cn|JS\.cn|ZJ\.cn|AH\.cn|FJ\.cn|JX\.cn|SD\.cn|HA\.cn|HB\.cn|HN\.cn|GD\.cn|GX\.cn|HI\.cn|SC\.cn|GZ\.cn|YN\.cn|XZ\.cn|SN\.cn|GS\.cn|QH\.cn|NX\.cn|XJ\.cn|TW\.cn|HK\.cn|MO\.cn|cn|REN|WANG|CITIC|TOP|SOHU|XIN|COM|NET|CLUB|XYZ|VIP|SITE|SHOP|INK|INFO|MOBI|RED|PRO|KIM|LTD|GROUP|BIZ|AUTO|LINK|WORK|LAW|BEER|STORE|TECH|FUN|ONLINE|ART|DESIGN|WIKI|LOVE|CENTER|VIDEO|SOCIAL|TEAM|SHOW|COOL|ZONE|WORLD|TODAY|CITY|CHAT|COMPANY|LIVE|FUND|GOLD|PLUS|GURU|RUN|PUB|EMAIL|LIFE|CO|FASHION|FIT|LUXE|YOGA|BAIDU|CLOUD|HOST|SPACE|PRESS|WEBSITE|ARCHI|ASIA|BIO|BLACK|BLUE|GREEN|LOTTO|ORGANIC|PET|PINK|POKER|PROMO|SKI|VOTE|VOTO|ICU))',
+                    r'([^.]+)(?:\.(?:GOV\.cn|ORG\.cn|AC\.cn|MIL\.cn|NET\.cn|EDU\.cn|COM\.cn|BJ\.cn|TJ\.cn|SH\.cn|CQ\.cn|HE\.cn|SX\.cn|NM\.cn|LN\.cn|JL\.cn|HL\.cn|JS\.cn|ZJ\.cn|AH\.cn|FJ\.cn|JX\.cn|SD\.cn|HA\.cn|HB\.cn|HN\.cn|GD\.cn|GX\.cn|HI\.cn|SC\.cn|GZ\.cn|YN\.cn|XZ\.cn|SN\.cn|GS\.cn|QH\.cn|NX\.cn|XJ\.cn|TW\.cn|HK\.cn|MO\.cn|cn|REN|WANG|CITIC|TOP|SOHU|XIN|COM|NET|CLUB|XYZ|VIP|SITE|SHOP|INK|INFO|MOBI|RED|PRO|KIM|LTD|GROUP|BIZ|AUTO|LINK|WORK|LAW|BEER|STORE|TECH|FUN|ONLINE|ART|DESIGN|WIKI|LOVE|CENTER|VIDEO|SOCIAL|TEAM|SHOW|COOL|ZONE|WORLD|TODAY|CITY|CHAT|COMPANY|LIVE|FUND|GOLD|PLUS|GURU|RUN|PUB|EMAIL|LIFE|CO|FASHION|FIT|LUXE|YOGA|BAIDU|CLOUD|HOST|SPACE|PRESS|WEBSITE|ARCHI|ASIA|BIO|BLACK|BLUE|GREEN|LOTTO|ORGANIC|PET|PINK|POKER|PROMO|SKI|VOTE|VOTO|ICU|LA))',
                     flags=re.IGNORECASE)
                 info_result = input_url.search(info)
                 if info_result is None:
@@ -53,7 +52,7 @@ def get_cookies():
     err_num = 0
     while err_num < 3:
         try:
-            cookie = requests.utils.dict_from_cookiejar(requests.get('https://beian.miit.gov.cn/', headers=cookie_headers).cookies)['__jsluid_s']
+            cookie = requests.utils.dict_from_cookiejar(requests.get('https://beian.miit.gov.cn/', headers=cookie_headers, timeout=(3.06, 27)).cookies)['__jsluid_s']
             return cookie
         except:
             err_num += 1
@@ -68,7 +67,7 @@ def get_token():
     auth_data = {'authKey': authKey, 'timeStamp': timeStamp}
     url = 'https://hlwicpfwc.miit.gov.cn/icpproject_query/api/auth'
     try:
-        t_response = requests.post(url=url, data=auth_data, headers=base_header).json()
+        t_response = requests.post(url=url, data=auth_data, headers=base_header, timeout=(3.06, 27)).json()
         token = t_response['params']['bussiness']
     except:
         return -1
@@ -80,7 +79,7 @@ def get_check_pic(token):
     base_header['Accept'] = 'application/json, text/plain, */*'
     base_header.update({'Content-Length': '0', 'token': token})
     try:
-        p_request = requests.post(url=url, data='', headers=base_header).json()
+        p_request = requests.post(url=url, data='', headers=base_header, timeout=(3.06, 27)).json()
         p_uuid = p_request['params']['uuid']
         big_image = p_request['params']['bigImage']
         small_image = p_request['params']['smallImage']
@@ -106,7 +105,7 @@ def get_sign(check_data, token):
     check_url = 'https://hlwicpfwc.miit.gov.cn/icpproject_query/api/image/checkImage'
     base_header.update({'Content-Length': '60', 'token': token, 'Content-Type': 'application/json'})
     try:
-        pic_sign = requests.post(check_url, json=check_data, headers=base_header).json()
+        pic_sign = requests.post(check_url, json=check_data, headers=base_header, timeout=(3.06, 27)).json()
         sign = pic_sign['params']
     except:
         return -1
@@ -118,7 +117,7 @@ def get_beian_info(info_data, p_uuid, token, sign):
     info_url = 'https://hlwicpfwc.miit.gov.cn/icpproject_query/api/icpAbbreviateInfo/queryByCondition'
     base_header.update({'Content-Length': '78', 'uuid': p_uuid, 'token': token, 'sign': sign})
     try:
-        beian_info = requests.post(url=info_url, json=info_data, headers=base_header).json()
+        beian_info = requests.post(url=info_url, json=info_data, headers=base_header, timeout=(3.06, 27)).json()
         if not beian_info["success"]:
             print(f'请求错误: CODE {beian_info["code"]} MSG {beian_info["msg"]}')
             return domain_list
@@ -150,7 +149,7 @@ def get_beian_info(info_data, p_uuid, token, sign):
             if beian_info['params']['isLastPage'] is True:
                 break
             else:
-                beian_info = requests.post(info_url, json=info_data, headers=base_header).json()
+                beian_info = requests.post(info_url, json=info_data, headers=base_header, timeout=(3.06, 27)).json()
                 end_row = beian_info['params']['endRow']
                 time.sleep(3)
     except Exception as e:
@@ -228,6 +227,7 @@ def data_saver(domain_list):
 
 
 def main():
+    print("获取Cookie中，速度取决于网站响应，请等待……\n")
     cookie = get_cookies()
     while True:
         info = query_base()
@@ -242,7 +242,9 @@ def main():
             # -1代表对应步骤失败了，不是-1则正常执行下一步
             if cookie != -1:
                 token = get_token()
+                print("\n获取Token，请等待……\n")
                 if token != -1:
+                    print("已获取到Token，查询中，速度取决于网站响应，请等待……")
                     check_data = get_check_pic(token)
                     if check_data != -1:
                         sign = get_sign(check_data, token)
