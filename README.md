@@ -74,12 +74,8 @@
 
 # 实际测试
 
-⏰`最新可用测试时间：2023年9月20日`
+⏰`最新可用测试时间：2023年9月25日`
 
-![备案查询.png](https://pic2.58cdn.com.cn/nowater/webim/big/n_v255991fd9cb5c4849a44183213fb9a711.png)
+![备案查询2.1.9.png](https://pic7.58cdn.com.cn/nowater/webim/big/n_v2e7e7ac7bf769468f82480fc8729d66e0.png)
 
 ![beian_info_xlsx.png](https://pic.rmb.bdstatic.com/bjh/539ab061960a8866feb41d88b490355a.png)
-
-# Gif演示
-
-![2.1.5查询演示.gif](https://dd-static.jd.com/ddimg/jfs/t1/47877/22/19761/1182325/62cc0d7fEc229b674/58716ce56ca63844.gif)
