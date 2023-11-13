@@ -6,7 +6,7 @@
 
 一个简单的Python程序，用于查询网站或企业的ICP备案信息
 
-适用于2023年新版的`工信部ICP/IP地址/域名信息备案管理系统`
+适用于~~~2023年新版~~~的`工信部ICP/IP地址/域名信息备案管理系统`
 
 ![CentOS](https://img.shields.io/badge/LINUX-CentOS-purple?style=for-the-badge&logo=CentOS)
 ![Ubuntu](https://img.shields.io/badge/LINUX-Ubuntu-orange?style=for-the-badge&logo=Ubuntu)
