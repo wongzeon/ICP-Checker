@@ -1,7 +1,3 @@
-# 提示
-
-11月13日工信部网站的验证方式发生重大变更，暂无法使用
-
 # ICP-Checker
 
 一个简单的Python程序，用于查询网站或企业的ICP备案信息
@@ -70,15 +66,13 @@
 
 或分别执行以下命令：
 
-`pip install opencv_python`
-
 `pip install requests`
 
 `pip install openpyxl`
 
 # 实际测试
 
-⏰`最新可用测试时间：2023年9月25日`
+⏰`最新可用测试时间：2023年11月23日`
 
 ![备案查询2.1.9.png](https://pic7.58cdn.com.cn/nowater/webim/big/n_v2e7e7ac7bf769468f82480fc8729d66e0.png)
 
