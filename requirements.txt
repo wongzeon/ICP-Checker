@@ -1,4 +1,2 @@
-opencv_python_headless==4.8.1.78
 openpyxl==3.0.10
-pycryptodome==3.19.0
 requests==2.29.0
