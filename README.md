@@ -23,14 +23,12 @@
 
 ✅ 支持通过域名、公司名、备案号查询备案信息
 
-✅ 支持自动完成拖动验证，存在极低的失败率
-
 ✅ 支持循环翻页查询，获取查询到的所有备案信息
 
 ✅ 支持将查询结果保存到表格文件
 
 # 使用
-已使用Pyinstaller打包成EXE可执行文件，[查看详情](https://github.com/wongzeon/ICP-Checker/releases/tag/2.1.4)
+已使用Pyinstaller打包成EXE可执行文件，[查看详情](https://github.com/wongzeon/ICP-Checker/releases/tag/2.2.0)
 
 方法一：输入完整的企业名称：XXXX有限公司、XXXX（XXXX）有限公司
 
@@ -40,40 +38,23 @@
 
 # 计划
 
-* ~~支持将查询结果写入Excel或数据库~~
-
-* ~~重构整个程序，完成函数封装~~
-
-* 制作GUI界面
-
 * 支持批量查询 
 
 # 说明
 
 ⚠ 项目仅用于学习交流，不可用于商业及非法用途
 
-结果默认保存：Windows系统保存至桌面，Linux等系统则保存至/home/文件夹
+结果默认保存：Windows系统保存至桌面，Linux等系统则保存至/home/用户名文件夹
 
-输入域名格式时，会判断域名是否是支持备案的类型，如果提示不支持即代表该域名无法备案
-
-具体可参考工信部公布的[备案域名列表](http://xn--fiq8ituh5mn9d1qbc28lu5dusc.xn--vuq861b/)
+2.2版本开始，仅对中文输入信息过滤，允许特殊符号为：. - 《》（）() — ，如果需要增加，可自行在第89行过滤规则内增加
 
 # 依赖
 
-如果已经装有 opencv、requests、openpyxl可以跳过这步，如果没有则执行：
-
 `pip install -r requirements.txt`
-
-或分别执行以下命令：
-
-`pip install requests`
-
-`pip install openpyxl`
 
 # 实际测试
 
 ⏰`最新可用测试时间：2023年11月23日`
 
-![备案查询2.1.9.png](https://pic7.58cdn.com.cn/nowater/webim/big/n_v2e7e7ac7bf769468f82480fc8729d66e0.png)
-
-![beian_info_xlsx.png](https://pic.rmb.bdstatic.com/bjh/539ab061960a8866feb41d88b490355a.png)
+![备案查询V2.2.0](https://pic1.58cdn.com.cn/nowater/webim/big/n_v2787194d15b564c00941d20fb5fdf6788.png)
+![2023-11-23](https://pic8.58cdn.com.cn/nowater/webim/big/n_v2a2b7aab92ca84922ab827b49f2b016de.png)
