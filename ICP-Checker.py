@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
 import re
 import os
-import cv2
 import time
-import base64
 import hashlib
 import requests
+from requests import utils
 import openpyxl as xl
 from openpyxl.styles import Alignment
 
@@ -17,7 +15,13 @@ def query_base():
     print("项目地址：https://github.com/wongzeon/ICP-Checker\n")
     while True:
         try:
-            info = input("请完整输入公司全称 / 域名以查询备案信息：\n\n").replace(" ", "").replace("https://www.", "").replace("http://www.", "").replace("http://", "")
+            info = (
+                input("请完整输入公司全称 / 域名以查询备案信息：\n\n")
+                .replace(" ", "")
+                .replace("https://www.", "")
+                .replace("http://www.", "")
+                .replace("http://", "")
+            )
             # 过滤空值和特殊字符，只允许 - —《》. () 分别用于域名和公司名
             if info == "":
                 raise ValueError("InputNone")
@@ -28,6 +32,7 @@ def query_base():
                 info_result = info
             else:
                 # 检测是否为可备案的域名类型（类型同步日期2022/01/06）
+                # TODO: 建议移除域名类型检测, 维护不及时且部分留存域名类型较为特殊, 包括 IP 备案.
                 input_url = re.compile(
                     r'([^.]+)(?:\.(?:GOV\.cn|ORG\.cn|AC\.cn|MIL\.cn|NET\.cn|EDU\.cn|COM\.cn|BJ\.cn|TJ\.cn|SH\.cn|CQ\.cn|HE\.cn|SX\.cn|NM\.cn|LN\.cn|JL\.cn|HL\.cn|JS\.cn|ZJ\.cn|AH\.cn|FJ\.cn|JX\.cn|SD\.cn|HA\.cn|HB\.cn|HN\.cn|GD\.cn|GX\.cn|HI\.cn|SC\.cn|GZ\.cn|YN\.cn|XZ\.cn|SN\.cn|GS\.cn|QH\.cn|NX\.cn|XJ\.cn|TW\.cn|HK\.cn|MO\.cn|cn|REN|WANG|CITIC|TOP|SOHU|XIN|COM|NET|CLUB|XYZ|VIP|SITE|SHOP|INK|INFO|MOBI|RED|PRO|KIM|LTD|GROUP|BIZ|AUTO|LINK|WORK|LAW|BEER|STORE|TECH|FUN|ONLINE|ART|DESIGN|WIKI|LOVE|CENTER|VIDEO|SOCIAL|TEAM|SHOW|COOL|ZONE|WORLD|TODAY|CITY|CHAT|COMPANY|LIVE|FUND|GOLD|PLUS|GURU|RUN|PUB|EMAIL|LIFE|CO|FASHION|FIT|LUXE|YOGA|BAIDU|CLOUD|HOST|SPACE|PRESS|WEBSITE|ARCHI|ASIA|BIO|BLACK|BLUE|GREEN|LOTTO|ORGANIC|PET|PINK|POKER|PROMO|SKI|VOTE|VOTO|ICU|LA))',
                     flags=re.IGNORECASE)
@@ -48,11 +53,17 @@ def query_base():
 
 
 def get_cookies():
-    cookie_headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36 Edg/101.0.1210.32'}
+    cookie_headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36 Edg/101.0.1210.32'}
     err_num = 0
     while err_num < 3:
         try:
-            cookie = requests.utils.dict_from_cookiejar(requests.get('https://beian.miit.gov.cn/', headers=cookie_headers, timeout=(3.06, 27)).cookies)['__jsluid_s']
+            cookie = utils.dict_from_cookiejar(
+                requests.get(
+                    'https://beian.miit.gov.cn/',
+                    headers=cookie_headers,
+                    timeout=(3.06, 27)).cookies
+            )['__jsluid_s']
             return cookie
         except:
             err_num += 1
@@ -74,48 +85,10 @@ def get_token():
     return token
 
 
-def get_check_pic(token):
-    url = 'https://hlwicpfwc.miit.gov.cn/icpproject_query/api/image/getCheckImage'
-    base_header['Accept'] = 'application/json, text/plain, */*'
-    base_header.update({'Content-Length': '0', 'token': token})
-    try:
-        p_request = requests.post(url=url, data='', headers=base_header, timeout=(3.06, 27)).json()
-        p_uuid = p_request['params']['uuid']
-        big_image = p_request['params']['bigImage']
-        small_image = p_request['params']['smallImage']
-    except:
-        return -1
-    # 解码图片，写入并计算图片缺口位置
-    with open('bigImage.jpg', 'wb') as f:
-        f.write(base64.b64decode(big_image))
-    with open('smallImage.jpg', 'wb') as f:
-        f.write(base64.b64decode(small_image))
-    background_image = cv2.imread('bigImage.jpg', cv2.COLOR_GRAY2RGB)
-    fill_image = cv2.imread('smallImage.jpg', cv2.COLOR_GRAY2RGB)
-    position_match = cv2.matchTemplate(background_image, fill_image, cv2.TM_CCOEFF_NORMED)
-    max_loc = cv2.minMaxLoc(position_match)[3][0]
-    mouse_length = max_loc + 1
-    os.remove('bigImage.jpg')
-    os.remove('smallImage.jpg')
-    check_data = {'key': p_uuid, 'value': mouse_length}
-    return check_data
-
-
-def get_sign(check_data, token):
-    check_url = 'https://hlwicpfwc.miit.gov.cn/icpproject_query/api/image/checkImage'
-    base_header.update({'Content-Length': '60', 'token': token, 'Content-Type': 'application/json'})
-    try:
-        pic_sign = requests.post(check_url, json=check_data, headers=base_header, timeout=(3.06, 27)).json()
-        sign = pic_sign['params']
-    except:
-        return -1
-    return sign
-
-
-def get_beian_info(info_data, p_uuid, token, sign):
+def get_beian_info(info_data, token):
     domain_list = []
     info_url = 'https://hlwicpfwc.miit.gov.cn/icpproject_query/api/icpAbbreviateInfo/queryByCondition'
-    base_header.update({'Content-Length': '78', 'uuid': p_uuid, 'token': token, 'sign': sign})
+    base_header.update({'token': token})
     try:
         beian_info = requests.post(url=info_url, json=info_data, headers=base_header, timeout=(3.06, 27)).json()
         if not beian_info["success"]:
@@ -127,7 +100,7 @@ def get_beian_info(info_data, p_uuid, token, sign):
         info = info_data['unitName']
         print(f"\n查询对象：{info} 共有 {domain_total} 个已备案域名\n")
         for i in range(0, page_total):
-            print(f"正在查询第{i+1}页……\n")
+            print(f"正在查询第{i + 1}页……\n")
             for k in range(0, end_row + 1):
                 info_base = beian_info['params']['list'][k]
                 domain_name = info_base['domain']
@@ -197,7 +170,8 @@ def data_saver(domain_list):
         wb = xl.Workbook()
         ws = wb.active
         ws.title = "备案信息"
-        title_list = ['域名主办方', '域名', '备案许可证号', '网站备案号', '域名类型', '网站前置审批项', '是否限制接入', '审核通过日期']
+        title_list = ['域名主办方', '域名', '备案许可证号', '网站备案号', '域名类型', '网站前置审批项', '是否限制接入',
+                      '审核通过日期']
         for i in range(0, 8):
             ws.cell(1, i + 1).value = title_list[i]
         col_width = {'A': 45, 'B': 40, 'C': 22, 'D': 24, 'E': 9, 'F': 15, 'G': 13, 'H': 21}
@@ -245,17 +219,8 @@ def main():
                 print("\n获取Token，请等待……\n")
                 if token != -1:
                     print("已获取到Token，查询中，速度取决于网站响应，请等待……")
-                    check_data = get_check_pic(token)
-                    if check_data != -1:
-                        sign = get_sign(check_data, token)
-                        p_uuid = check_data['key']
-                        if sign != -1:
-                            domain_list = get_beian_info(info, p_uuid, token, sign)
-                            data_saver(domain_list)
-                        else:
-                            raise ValueError("获取Sign遇到错误，请重试！")
-                    else:
-                        raise ValueError("计算图片缺口位置错误，请重试！")
+                    domain_list = get_beian_info(info, token)
+                    data_saver(domain_list)
                 else:
                     raise ValueError("获取Token失败，如频繁失败请关闭程序后等待几分钟再试！")
             else:
