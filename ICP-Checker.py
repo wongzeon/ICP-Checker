@@ -31,11 +31,11 @@ class get_required_info(object):
                 return response
             elif response_code == 200 and response_msg is False: # 验证错误，需要重新获取验证图片
                 return 'pic_check_fail'
-            elif response_code == 401: # Token 过期
+            elif response_code in [401, 429]: # Token 过期
                 print(f"{' 刷新Token请重试 ':-^54}")
                 self.get_token()
                 return -1
-            elif response_code == (500 or 501):
+            elif response_code in [500, 501]:
                 return 'server_error'
             elif response.status_code == 403: # WAF 触发，只有这个会正确返回状态码，其他的错误状态码响应的是200
                 print(f"{' 触发防火墙了，过几分钟再试吧 ':*^50}")
